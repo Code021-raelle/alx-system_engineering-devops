@@ -4,6 +4,6 @@
 
 for file in *; do
    if [[ ! $file == .* ]]; then
-      echo ${file#*-}
+      echo "${file#*-}"
    fi
 done
