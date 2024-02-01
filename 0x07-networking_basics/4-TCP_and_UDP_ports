@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# This script displays listening sockets and the associated process IDs and names
+
+listening_sockets=$(netstat -ltnp 2>/dev/null | awk '/LISTEN/{print $7}' | sed 's/\/.*$//')
+
+for pid in $listening_sockets; do
+	process_name=$(ps -p "$pid" -o comm=)
+	echo "Listening Socket: $pid - Process Name: $process_name"
+done
