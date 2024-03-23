@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Description: Create an RSA key pair with specific requirements
+
+# Check if the file already exists
+if [[ -e school || -e school.pub ]]; then
+	echo "Files already exist. Please remove them before running this script."
+	exit 1
+fi
+
+# Generate the RSA key pair with specified parameters
+ssh-keygen -t rsa -b 4096 -N "betty" -f school -C "Generated RSA key pair for educational purposes"
+
+# Check if the key generation was successful
+if [[ $? -eq 0 ]]; then
+	echo "RSA key pair generated successfully."
+	exit 0
+else
+	echo "Error generating RSA key pair."
+	exit 1
+fi
