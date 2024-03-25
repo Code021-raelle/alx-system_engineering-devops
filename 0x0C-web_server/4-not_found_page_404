@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Script to configure Nginx custom 404 page
+
+# Update package index and install Nginx silently
+apt-get update -y
+apt-get install nginx -y
+
+# Create a custom 404 error page with the required string
+echo '<!DOCTYPE html>
+<html>
+<head>
+	<title>404 Not Found</title>
+</head>
+<body>
+	<h1>404 Not Found</h1>
+	<p>Ceci n\'est pas une page</p>
+</body>
+</html>' > /usr/share/ngnix/html/404.html
+
+# Modify Ngnix default configuration to use the custom 404 page
+echo 'server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+	root /usr/share/nginx/html;
+	index index.html index.htm index.nginx-debian.html;
+
+	server_name _;
+
+	error_page 404 /404.html;
+	location = /404.html {
+		internal;
+	}
+}' > /etc/nginx/sites-available/default
+
+# Restart Nginx without using systemctl
+service nginx restart
