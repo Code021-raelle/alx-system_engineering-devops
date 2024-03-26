@@ -1,40 +1,46 @@
 # How to install and configure Nginx server with Puppet
 
+exec { 'apt_update':
+  command => '/usr/bin/apt-get update',
+  path    => ['/usr/bin', '/bin', '/usr/sbin', '/sbin'],
+}
+
 # Install Nginx package
 package { 'nginx':
-  ensure => installed,
+  ensure  => installed,
+  require => Exec['apt_update'],
+}
+
+service { 'nginx':
+  ensure     => running,
+  enable     => true,
+  hasrestart => true,
+  hasstatus  => true,
+  require    => Package['nginx'],
+}
+
+# Configure Nginx to listen on port 80
+file { '/etc/nginx/sites-available/default':
+  ensure  => file,
+  content => file('/templates/nginx/default.erb'),
+  require => Package['nginx'],
+  notify  => Service['nginx'],
 }
 
 # Modify Nginx default configuration to make it listen on port 80 and return "Hello World!" on root GET request
-file { '/etc/nginx/sites-available/default':
+file { '/etc/nginx/sites-available/default.erb'
   ensure  => file,
-  replace => true,
   content => "
     server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
-
-        root /var/www/html;
-        index index.html index.htm index.nginx-debian.html;
-
+        listen 80;
         server_name _;
 
         location / {
-            try_files $uri $uri/ =404;
-            add_header Content-Type text/html;
-            echo 'Hello World!';
+            return 200 'Hello World!';
         }
 
         location /redirect_me {
-            return 301 https://www.example.com/new-page;
+            return 301 https://www.example.com;
         }
-    }
-  ",
-}
-
-# Restart Nginx service
-service { 'nginx':
-  ensure    => running,
-  enable    => true,
-  subscribe => File['/etc/nginx/sites-available/default'],
+    }",
 }
