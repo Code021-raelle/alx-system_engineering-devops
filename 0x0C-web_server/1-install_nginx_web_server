@@ -8,7 +8,7 @@ sudo apt-get install nginx -y
 #Modify Nginx default configuration to make it listen on port 80 on GET request
 sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
 
-echo "Hello World!" > /var/www/html/index.html
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
 
 # Restart Nginx without using systemctl
 sudo service nginx restart
