@@ -1,24 +1,27 @@
 #!/usr/bin/env bash
 # Script to configure Nginx redirection
 
-# Update package index and install Nginx silently
+# Update package lists
 sudo apt-get update -y
-sudo apt-get install nginx -y
+
+# install Nginx if not already installed
+if ! command -v nginx &> /dev/null; then
+	apt-get install nginx -y
+fi
 
 # Modify Nginx default configuration to redirect /redirect_me to another page
-echo 'server {
-	listen 80 default_server;
-	listen [::]:80 default_server;
-
-	root /var/www/html;
-	index index.html index.htm index.nginx-debian.html;
-
+echo "server {
+	listen 80;
 	server_name _;
 
 	location /redirect_me {
 		return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
 	}
-}' > /etc/nginx/sites-available/default
+
+	location / {
+		try_files \$uri \$uri/ =404;
+	}
+}" > /etc/nginx/sites-available/default
 
 # Restart Nginx without using systemctl
 sudo service nginx restart
