@@ -2,8 +2,8 @@
 # Script to configure Nginx redirection
 
 # Update package index and install Nginx silently
-apt-get update -y
-apt-get install nginx -y
+sudo apt-get update -y
+sudo apt-get install nginx -y
 
 # Modify Nginx default configuration to redirect /redirect_me to another page
 echo 'server {
@@ -21,4 +21,4 @@ echo 'server {
 }' > /etc/nginx/sites-available/default
 
 # Restart Nginx without using systemctl
-service nginx restart
+sudo service nginx restart

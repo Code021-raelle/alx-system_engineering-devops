@@ -2,8 +2,8 @@
 # Script to configure Nginx custom 404 page
 
 # Update package index and install Nginx silently
-apt-get update -y
-apt-get install nginx -y
+sudo apt-get update -y
+sudo apt-get install nginx -y
 
 # Create a custom 404 error page with the required string
 echo '<!DOCTYPE html>
@@ -34,4 +34,4 @@ echo 'server {
 }' > /etc/nginx/sites-available/default
 
 # Restart Nginx without using systemctl
-service nginx restart
+sudo service nginx restart

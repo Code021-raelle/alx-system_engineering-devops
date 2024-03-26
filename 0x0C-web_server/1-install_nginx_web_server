@@ -6,18 +6,9 @@ sudo apt-get update -y
 sudo apt-get install nginx -y
 
 #Modify Nginx default configuration to make it listen on port 80 on GET request
-echo "server {
-	listen 80 default_server;
+sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
 
-	root /var/www/html;
-	index index.html;
-
-	server_name _;
-
-	location / {
-		echo 'Hello World!';
-	}
-}" > /etc/nginx/sites-available/default
+echo "Hello World!" > /var/www/html/index.html
 
 # Restart Nginx without using systemctl
-service nginx restart
+sudo service nginx restart
