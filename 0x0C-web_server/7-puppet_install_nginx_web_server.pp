@@ -1,4 +1,4 @@
-# Install and configure Nginx server with puppet
+# How to install and configure Nginx server with Puppet
 
 # Install Nginx package
 package { 'nginx':
@@ -21,6 +21,7 @@ file { '/etc/nginx/sites-available/default':
 
         location / {
             try_files $uri $uri/ =404;
+            add_header Content-Type text/html;
             echo 'Hello World!';
         }
 

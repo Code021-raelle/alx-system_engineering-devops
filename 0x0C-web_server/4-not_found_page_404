@@ -13,7 +13,7 @@ echo '<!DOCTYPE html>
 </head>
 <body>
 	<h1>404 Not Found</h1>
-	<p>Ceci n\'est pas une page</p>
+	<p>Ceci n'\''est pas une page</p>
 </body>
 </html>' > /usr/share/ngnix/html/404.html
 
