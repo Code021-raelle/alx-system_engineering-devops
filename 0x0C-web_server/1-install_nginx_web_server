@@ -2,16 +2,15 @@
 # Script to install and configure Nginx web server
 
 # Update package index and install Nginx silently
-apt-get update -y
-apt-get install nginx -y
+sudo apt-get update -y
+sudo apt-get install nginx -y
 
 #Modify Nginx default configuration to make it listen on port 80 on GET request
 echo "server {
 	listen 80 default_server;
-	listen [::]:80 default_server;
 
 	root /var/www/html;
-	index index.html index.htm index.nginx-debian.html;
+	index index.html;
 
 	server_name _;
 
