@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
-# Command I used to fix this
-
 service apache2 start
+echo "Hello Holberton" > /var/www/html/index.html
