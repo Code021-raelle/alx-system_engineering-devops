@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # commands used to fix issue
-service apache2 start
+sudo service apache2 start
 echo "Hello Holberton" > /var/www/html/index.html
