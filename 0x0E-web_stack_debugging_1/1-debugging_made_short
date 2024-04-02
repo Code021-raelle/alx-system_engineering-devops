@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# This script attempts to fix nginx
+sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
+nginx -s reload
