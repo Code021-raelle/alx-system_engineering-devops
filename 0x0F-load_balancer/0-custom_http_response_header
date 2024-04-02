@@ -4,7 +4,21 @@
 sudo apt-get update
 sudo apt-get install -y nginx
 
-sudo service nginx start
-sudo sed -i "11i\\\tadd_header X-Served-By $HOSTNAME;" /etc/nginx/nginx.conf
+echo 'server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+	root /var/www/html;
+	index index.html index.htm index.nginx-debian.html;
+
+	server_name _;
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+
+	add_header X-Served-By $hostname;
+}
+' > /etc/nginx/sites-available/default
 
 sudo systemctl restart nginx
