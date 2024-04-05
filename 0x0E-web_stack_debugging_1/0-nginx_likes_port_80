@@ -2,3 +2,4 @@
 # This script fixes Nginx not listening on port 80 issue
 sudo sed -i 's/8080 default_server/80 default_server/g' /etc/nginx/sites-enabled/default
 sudo service nginx restart
+
