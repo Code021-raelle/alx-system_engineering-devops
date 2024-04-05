@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # This script attempts to fix nginx
-sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
-nginx -s reload
+sudo sed -i 's/8080 default_server/80 default_server/g' /etc/nginx/sites-enabled/default
+sudo service nginx restart
