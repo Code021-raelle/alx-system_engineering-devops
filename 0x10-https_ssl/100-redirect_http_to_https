@@ -7,6 +7,7 @@ global
 	user haproxy
 	group haproxy
 	daemon
+	default_server redirect to HTTPS
 
 	# Default SSL material locations
 	ca-base /etc/ssl/certs
@@ -34,11 +35,10 @@ defaults
 	errorfile 504 /etc/haproxy/errors/504.http
 
 frontend load_balancer
-	bind	0.0.0.0:80
+	bind	*:80
 	bind	0.0.0.0:443 ssl crt /etc/ssl/www.code021.tech/www.code021.tech.pem
 	mode	http
-
-	redirect scheme https code 301 if !{ ssl_fc }
+	http-request redirect scheme https code 301 if !{ ssl_fc }
 
 	acl letsencrypt-acl path_beg /.well-known/acme-challenge/
 	use_backend letsencrypt-backend if letsencrypt-acl
@@ -49,6 +49,7 @@ backend letsencrypt-backend
 	server letsencrypt 127.0.0.1:8888
 
 backend web_servers
+	option	httpchk
 	balance roundrobin
 	mode	http
 	server	497106-web-01 54.157.180.224
