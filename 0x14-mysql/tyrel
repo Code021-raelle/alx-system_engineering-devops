@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -e
+
+MYSQL_PASSWORD="projectcorrection280hbtn"
+
+mysql -uroot -p$MYSQL_PASSWORD -e "CREATE DATABASE IF NOT EXISTS tyrell_corp;"
+mysql -uroot -p$MYSQL_PASSWORD -e "USE tyrell_corp; CREATE TABLE IF NOT EXISTS nexus6 (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255));"
+mysql -uroot -p$MYSQL_PASSWORD -e "USE tyrell_corp; INSERT INTO nexus6 (name) VALUES ('Leon');"
+
+mysql -uroot -p$MYSQL_PASSWORD -e "GRANT SELECT ON tyrell_corp.nexus6 TO 'holberton_user'@'localhost';"
+mysql -uroot -p$MYSQL_PASSWORD -e "FLUSH PRIVILEGES;"
