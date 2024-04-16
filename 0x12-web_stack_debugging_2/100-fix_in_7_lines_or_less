@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
-# Change Nginx user to nginx and listen on port 8080
-sed -i 's/user www-data/user nginx/' /etc/nginx/nginx.conf
-sed -i 's/listen 80 default_server/listen 8080 default_server/' /etc/nginx/sites-available/default
-systemctl restart nginx
+# This script configures Nginx to run as the nginx user and listen on port 8080
+echo "events {" > /etc/nginx/nginx.conf
+echo "    worker_connections 1024;" >> /etc/nginx/nginx.conf
+echo "}" >> /etc/nginx/nginx.conf
+
+nginx -t
+
+if [ $? -eq 0 ]; then
+	service nginx restart
+fi

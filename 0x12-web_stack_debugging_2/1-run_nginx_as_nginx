@@ -1,6 +1,51 @@
 #!/usr/bin/env bash
-# This script configures Nginx to run as the nginx user and listen on port 8080
-sed -i 's/user www-data/user nginx/' /etc/nginx/nginx.conf
-sed -i 's/listen 80 default_server/listen 8080 default_server/' /etc/nginx/sites-available/default
+# Change Nginx user to nginx and listen on port 8080
 
-systemctl restart nginx
+# Check if the nginx group exists
+if ! getent group nginx >/dev/null 2>&1; then
+	echo "Creating nginx group..."
+	groupadd nginx
+fi
+
+# Check if the nginx user exists
+if ! id -u nginx >/dev/null 2>&1; then
+	echo "Creating nginx user and group..."
+	useradd --system --no-create-home --shell /bin/false --gid nginx nginx
+fi
+
+# Configure Nginx to run as the nginx user
+echo "user nginx;" > /etc/nginx/nginx.conf
+
+echo "events {" >> /etc/nginx/nginx.conf
+echo "    worker_connections 1024;" >> /etc/nginx/nginx.conf
+echo "}" >> /etc/nginx/nginx.conf
+
+# Configure Nginx to listen on all active IPs on port 8080
+echo "server {" > /etc/nginx/sites-available/default
+echo "    listen 8080;" >> /etc/nginx/sites-available/default
+echo "    server_name _;" >> /etc/nginx/sites-available/default
+echo "    location / {" >> /etc/nginx/sites-available/default
+echo "        return 200 'Hello, World!';" >> /etc/nginx/sites-available/default
+echo "    }" >> /etc/nginx/sites-available/default
+echo "}" >> /etc/nginx/sites-available/default
+
+# Check if the symbolic link already exists, remove it if it does
+if [ -L /etc/nginx/sites-enabled/default ]; then
+	echo "Removing existing symbolic link for default site..."
+	rm /etc/nginx/sites-enabled/default
+fi
+
+# Enable the default site
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+
+# Test the Nginx configuration for syntax errors
+echo "Testing Nginx configuration for syntax errors..."
+nginx -t
+
+# If the test is successful, restart Nginx to apply changes
+if [ $? -eq 0 ]; then
+	echo "Restarting Nginx to apply changes..."
+	service nginx restart
+else
+	echo "Nginx configuration test failed. Please check the configuration."
+fi
