@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 # This script configures Nginx to run as the nginx user and listen on port 8080
-echo "events {" > /etc/nginx/nginx.conf
-echo "    worker_connections 1024;" >> /etc/nginx/nginx.conf
-echo "}" >> /etc/nginx/nginx.conf
+{
+	echo "events {"
+	echo "    worker_connections 1024;"
+	echo "}"
+} > /etc/nginx/nginx.conf
 
-nginx -t
-
-if [ $? -eq 0 ]; then
-	service nginx restart
-fi
+service nginx restart
