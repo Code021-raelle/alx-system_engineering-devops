@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+
+MYSQL_PASSWORD="projectcorrection280hbtn"
+
+mysql -uroot -p -e "CREATE USER 'holberton_user'@'localhost' IDENTIFIED BY '$MYSQL_PASSWORD';"
+mysql -uroot -p -e "GRANT REPLICATION CLIENT ON *.* TO 'holberton_user'@'localhost';"
+mysql -uroot -p -e "FLUSH PRIVILEGES;"
+
+sudo systemctl restart mysql
