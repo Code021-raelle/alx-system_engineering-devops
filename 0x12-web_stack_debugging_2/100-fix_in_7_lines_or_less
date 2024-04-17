@@ -5,5 +5,3 @@
 	echo "    worker_connections 1024;"
 	echo "}"
 } > /etc/nginx/nginx.conf
-
-service nginx restart
