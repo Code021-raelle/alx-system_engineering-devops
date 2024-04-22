@@ -14,30 +14,32 @@ if __name__ == "__main__":
         print("Usage: {} <employee_id>".format(sys.argv[0]))
         sys.exit
 
-    employee_id = int(sys.argv[1])
+    user_id = int(sys.argv[1])
 
     # Fetching employee data
-    user_url = 'https://jsonplaceholder.typicode.com/users/{}'.format(
-            employee_id)
-    todo_url = 'https://jsonplaceholder.typicode.com/todos?userId={}'.format(
-            employee_id)
+    users_url = 'https://jsonplaceholder.typicode.com/users/{}'.format(
+            user_id)
+    todo_url = 'https://jsonplaceholder.typicode.com/todos'
 
-    user_response = requests.get(user_url)
-    todo_response = requests.get(todo_url)
+    file_content = []
 
-    user_data = user_response.json()
-    todo_data = todo_response.json()
+    todo_data = requests.get(todo_url).json()
 
     # Extracting necessary information
-    employee_name = user_data.get('username')
+    employee_name = requests.get(users_url).json()["username"]
 
     # Writing data to CSV file
-    csv_file_name = '{}.csv'.format(employee_id)
-    with open(csv_file_name, mode='w', newline='') as file:
-        writer = csv.writer(file, quoting=csv.QUOTE_ALL)
-        writer.writerow(
-                ['USER_ID', 'USERNAME', 'TASK_COMPLETED_STASUS', 'TASK_TITLE'])
+    for todo in todo_data:
+        if user_id == todo["userId"]:
+            file_content.append(
+                    [str(user_id), employee_name, todo["completed"],
+                        todo["title"]])
 
-        for task in todo_data:
-            writer.writerow([employee_id, employee_name, task[
-                'completed'], task['title']])
+        print(file_content)
+        file_name = "{}.csv".format(user_id)
+        with open(file_name, 'w', newline='') as csv_file:
+            write = csv.writer(csv_file, quoting=csv.QUOTE_ALL)
+            for row in file_content:
+                for item in row:
+                    str(item)
+                write.writerow(row)
