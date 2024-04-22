@@ -34,7 +34,7 @@ if __name__ == "__main__":
     # Writing data to CSV file
     csv_file_name = '{}.csv'.format(employee_id)
     with open(csv_file_name, mode='w', newline='') as file:
-        writer = csv.writer(file)
+        writer = csv.writer(file, quoting=csv.QUOTE_ALL)
         writer.writerow(
                 ['USER_ID', 'USERNAME', 'TASK_COMPLETED_STASUS', 'TASK_TITLE'])
 
