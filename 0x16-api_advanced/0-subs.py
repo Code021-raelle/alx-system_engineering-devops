@@ -19,7 +19,7 @@ def number_of_subscribers(subreddit):
     is invalid.
     """
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
-    headers = {"User-Agent": "MyBot/0.1"}
+    headers = {"User-Agent": "Mozilla/5.0"}
     response = requests.get(url, headers=headers, allow_redirects=False)
 
     if response.status_code == 200:
