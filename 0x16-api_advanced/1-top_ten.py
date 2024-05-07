@@ -17,7 +17,7 @@ def top_ten(subreddit):
     Returns:
         None
     """
-    headers = {'User-Agent': 'MyBot/0.1'}
+    headers = {'User-Agent': 'Chrome/5.0'}
     url = f'https://www.reddit.com/r/{subreddit}/hot.json?limit=10'
     response = requests.get(url, headers=headers)
 
