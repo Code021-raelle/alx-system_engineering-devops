@@ -24,7 +24,10 @@ def number_of_subscribers(subreddit):
 
     if response.status_code == 200:
         data = response.json()
-        return data['data']['subscribers']
+        if 'subscribers' in data['data']:
+            return data['data']['subscribers']
+        else:
+            return 0
     else:
         return 0
 
