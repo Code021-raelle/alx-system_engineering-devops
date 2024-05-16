@@ -34,7 +34,7 @@ file { '/etc/nginx/nginx.conf':
       }
     }
   ",
-  notify => Service['nginx'],
+  notify  => Service['nginx'],
 }
 
 service { 'nginx':
