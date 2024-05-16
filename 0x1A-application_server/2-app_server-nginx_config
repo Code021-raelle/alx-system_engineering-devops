@@ -1,12 +1,19 @@
-server {
-    listen 80;
-    server_name _;
+#!/usr/bin/env bash
+# Configure Nginx to serve page from /airbnb-onepage/
 
-    location /airbnb-onepage/ {
-        proxy_pass http://127.0.0.1:5000;
-	proxy_set_header Host $host;
-	proxy_set_header X-Real-IP $remote_addr;
-	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-	proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
+sudo apt-get update
+sudo apt-get install -y nginx
+
+sudo mkdir -p /data/web_static/releases/test/
+sudo mkdir -p /data/web_static/shared/
+
+echo "Hello HBNB!" | sudo tee /data/web_static/releases/test/index.html
+
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
+
+sudo chown -R ubuntu:ubuntu /data/
+
+sudo sed -i '37i\\tlocation /airbnb-onepage/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
+
+sudo service nginx restart
+

@@ -1,0 +1,19 @@
+server {
+    # Listen on port 80 for incoming requests
+    listen 80;
+
+    # Specify the server name
+    server_name 124704-web-01;
+
+    location /api/ {
+        # Proxy requests to the Gunicorn server running on localhost:5002
+        proxy_pass http://localhost:5002;
+
+        # Set the Host header to the original request's host
+        proxy_set_header Host $host;
+
+        # Set the X-Real-IP header to the client's IP address
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+
